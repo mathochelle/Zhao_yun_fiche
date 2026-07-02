@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MENU</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:
+    url("images/fond4.png") center center/cover no-repeat;
+    font-family:Impact,sans-serif;
+}
+
+/* =========================
+   PORTRAIT PRINCIPAL
+========================= */
+
+.character-display{
+    position:absolute;
+    left:0;
+    top:0;
+    width:60%;
+    height:100%;
+    overflow:hidden;
+}
+
+.big-character{
+    position:absolute;
+    left:-800px;
+    bottom:0;
+    height:95%;
+    object-fit:contain;
+
+    transition:left .4s ease-out;
+}
+
+.big-character.active{
+    left:20px;
+}
+/* =========================
+   NOM
+========================= */
+
+.character-name{
+    position:absolute;
+    top:25px;
+    left:20%;
+    transform:translateX(-50%) skew(-15deg);
+
+    font-size:70px;
+    color:white;
+    letter-spacing:4px;
+
+    padding:10px 40px;
+    z-index:10;
+
+    text-shadow:
+    3px 3px 0 black,
+    6px 6px 10px rgba(0,0,0,.5);
+      clip-path:polygon(
+        0 0,
+        92% 0,
+        100% 50%,
+        92% 100%,
+        0 100%
+    );
+}
+
+/* bande inclinée derrière */
+.character-name::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.05),
+            rgba(255,255,255,.45),
+            rgba(255,255,255,.15)
+        );
+
+    border-left:8px solid white;
+    transform:skew(-15deg);
+
+    z-index:-1;
+}
+
+/* texte remis droit OU laissé incliné */
+.character-name i{
+    display:block;
+    font-style:normal;
+
+    /* supprimer cette ligne si tu veux le texte incliné */
+    transform:skew(15deg);
+}
+
+/* =========================
+   LISTE DES PERSOS
+========================= */
+
+.character-grid{
+    position:absolute;
+    right:180px;
+    top:50%;
+    transform:translateY(-50%);
+
+    display:grid;
+    grid-template-columns:repeat(2, 90px);
+    gap:15px;
+}
+/* ligne 1 */
+.portrait:nth-child(1),
+.portrait:nth-child(2){ margin-left:100px; }
+
+/* ligne 2 */
+.portrait:nth-child(3),
+.portrait:nth-child(4){ margin-left:75px; }
+
+/* ligne 3 */
+.portrait:nth-child(5),
+.portrait:nth-child(6){ margin-left:50px; }
+
+/* ligne 4 */
+.portrait:nth-child(7),
+.portrait:nth-child(8){ margin-left:25px; }
+
+/* ligne 5 */
+.portrait:nth-child(9){ margin-left:0; }
+.portrait{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    overflow:hidden;
+    border:4px solid #fff;
+    cursor:pointer;
+    transition:.2s;
+    background:#111;
+}
+
+.portrait img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.portrait:hover{
+    transform:scale(1.08);
+}
+
+.portrait.selected{
+    border-color:#ffe100;
+    box-shadow:
+    0 0 15px #ffe100,
+    0 0 30px #ffb700;
+    transform:scale(1.15);
+}
+
+/* =========================
+   PLAYER SELECT
+========================= */
+
+.player-select{
+    position:absolute;
+    bottom:40px;
+    right:70px;
+    font-size:42px;
+    color:#ff2b2b;
+    text-shadow:
+    3px 3px 0 black,
+    0 0 15px rgba(255,0,0,.7);
+    transform:skew(-10deg);
+}
+
+/* =========================
+   TIMER
+========================= */
+
+.timer{
+    position:absolute;
+    right:30px;
+    bottom:20px;
+    color:white;
+    text-align:center;
+    font-size:18px;
+}
+
+.timer span{
+    display:block;
+    font-size:55px;
+}
+.info-screen{
+
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:60px;
+
+    background:
+        radial-gradient(circle at center,#303030 0%,#111 60%,#000 100%);
+
+    color:white;
+
+    transform:translateX(100%);
+    opacity:0;
+
+    transition:
+        transform .45s ease,
+        opacity .45s ease;
+
+    z-index:1000;
+
+    overflow:hidden;
+}
+
+.info-screen.active{
+
+    transform:translateX(0);
+    opacity:1;
+
+}
+.info-screen img{
+
+    height:90%;
+
+    object-fit:contain;
+
+    transform:translateX(150px);
+
+    opacity:0;
+
+    transition:.6s ease;
+
+}
+
+.info-screen.active img{
+
+    transform:translateX(0);
+
+    opacity:1;
+
+}
+
+#backButton{
+
+    position:absolute;
+
+    top:25px;
+    left:25px;
+
+    padding:12px 25px;
+
+    border:none;
+
+    background:#d40000;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+#backButton:hover{
+
+    transform:scale(1.1);
+
+    background:red;
+
+}
+.info-left{
+    width:55%;
+    z-index:2;
+
+    height:100%;
+    overflow-y:auto;
+
+    padding:
+        70px 25px 40px 0; /* espace en haut pour le bouton Retour */
+
+    scrollbar-width:thin;
+    scrollbar-color:#ff4040 #222;
+}
+.info-left::-webkit-scrollbar{
+    width:8px;
+}
+
+.info-left::-webkit-scrollbar-track{
+    background:#222;
+}
+
+.info-left::-webkit-scrollbar-thumb{
+    background:#ff4040;
+    border-radius:10px;
+}
+.info-right{
+
+    width:40%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+
+    height:100%;
+
+}
+#infoName{
+
+    font-size:55px;
+
+    color:#ffe100;
+
+    margin-bottom:25px;
+
+    text-shadow:
+    0 0 15px orange,
+    3px 3px 0 black;
+
+}
+.info-screen h2{
+
+    margin-top:25px;
+
+    margin-bottom:10px;
+
+    color:#ff4040;
+
+    letter-spacing:2px;
+
+}
+.info-screen p{
+    font-size:17px;
+    line-height:1.5;
+    color:#ddd;
+}
+/*=========================
+TRANSITION MOSAÏQUE
+=========================*/
+
+#transition{
+
+    position:fixed;
+    inset:0;
+
+    display:grid;
+
+    grid-template-columns:repeat(20,1fr);
+    grid-template-rows:repeat(12,1fr);
+
+    pointer-events:none;
+
+    z-index:9999;
+
+}
+
+.pixel{
+
+    background:#000;
+
+    opacity:0;
+
+    transform:scale(0);
+
+}
+</style>
+</head>
+
+<body>
+<audio id="bgMusic" src="sounds/music.mp3" loop></audio>
+<div class="character-name" id="characterName">
+<i>SCORPION</i>
+</div>
+
+<div class="character-display">
+    <img id="bigCharacter" class="big-character active"
+    src="https://i.imgur.com/CN8wN6Y.png">
+</div>
+
+<div class="character-grid" id="grid"></div>
+
+<div class="player-select">
+PLAYER SELECT
+</div>
+
+<div class="timer">
+TIME
+<span id="timer">29</span>
+</div>
+<audio id="moveSound" src="sounds/select1.mp3" preload="auto"></audio>
+
+<audio id="voiceSound" preload="auto"></audio>
+
+<div id="infoScreen" class="info-screen">
+
+    <button id="backButton">← Retour</button>
+
+    <div class="info-left">
+
+        <h1 id="infoName"></h1>
+
+        <h2>BIO</h2>
+        <p id="infoBio"></p>
+
+        <h2>COUP SPÉCIAL</h2>
+        <h3 id="infoSpecial"></h3>
+        <p id="infoSpecialDesc"></p>
+
+        <h2>STATISTIQUES</h2>
+        <p id="infoStats"></p>
+
+        <h2>STYLE DE JEU</h2>
+        <p id="infoGameplay"></p>
+
+    </div>
+
+    <div class="info-right">
+
+        <img id="infoImage">
+
+    </div>
+
+</div>
+<div id="transition"></div>
+<script>
+const transition = document.getElementById("transition");
+const characters = [
+{
+    name:"ZHAO-WEI",
+    portrait:"images/001perso.png",
+    image:"images/001perso.png",
+	voice:"sounds/voices/zhao_wei.mp3",
+	
+    bio:`Fondateur de la branche Zhao du style Yi Yang, Zhao Wei est un maître respecté pour sa discipline et sa force inébranlable. Après avoir tué son épouse lors d'un duel d'honneur, il décida de porter seul ce fardeau. Brisant les traditions du Sanctuaire, il choisit lui-même de former ses fils, Zhao Yun et son frère. Aux côtés du Maître Aveugle Fu Wu Jin, il veille aujourd'hui sur le Sanctuaire avec une rigueur absolue.`,
+
+    special:"Shān Bēng",
+
+    specialDesc:`Zhao Wei concentre toute sa puissance dans une frappe qui fait éclater le sol sous ses pieds. Un immense bloc de pierre surgit de la terre avant d'être pulvérisé d'un coup de poing, projetant un déluge de roches sur son adversaire.`,
+
+    speed:"★★☆☆☆",
+    damage:"★★★★★",
+    defense:"★★★★★",
+    difficulty:"★★★☆☆",
+
+    gameplay:`Zhao Wei est un combattant lent, mais terriblement puissant. Chacune de ses attaques inflige des dégâts considérables et peut facilement briser le rythme de l'adversaire. Son gameplay repose sur la patience, les coups lourds et le contrôle de l'espace. Bien maîtrisé, il est capable de punir la moindre erreur avec une force dévastatrice.`
+},
+{
+    name:"ZHAO-YUN",
+    portrait:"images/002perso.png",
+    image:"images/002perso.png",
+	voice:"sounds/voices/zhao_yun.mp3",
+    bio:`Fils de Zhao Wei et héritier de la branche Zhao du style Yi Yang, Zhao Yun grandit sous l'enseignement de son père et du Maître Aveugle. Refusant de suivre une seule voie, il fusionna leurs philosophies pour créer son propre art martial : un style où chaque mouvement suit le rythme du combat. Plus l'affrontement dure, plus ses attaques deviennent rapides et imprévisibles, jusqu'à former une véritable danse. Convaincu qu'aucun art martial n'est absolu, Zhao Yun parcourt désormais le monde afin d'affronter les plus grands combattants et perfectionner son style, avec un seul objectif : créer l'art martial ultime.`,
+
+    special:"Wàn Lǜ Guī Yī",
+
+    specialDesc:`Après avoir accumulé suffisamment de Tempo, Zhao Yun entre dans un état d'harmonie totale avec son environnement. Ses mouvements deviennent imperceptibles, enchaînant une rafale de frappes sous tous les angles avant de conclure par un coup dévastateur. Cette technique ne peut être utilisée qu'une fois la jauge de Tempo entièrement remplie.`,
+
+    speed:"★★★★★",
+    damage:"★★★★☆",
+    defense:"★★★☆☆",
+    difficulty:"★★★★★",
+
+    gameplay:`Zhao Yun est un personnage très technique dont la force repose sur sa jauge de Tempo. En esquivant, en enchaînant les combos et en maintenant la pression, il accumule progressivement du Tempo, ce qui lui permet d'augmenter son potentiel offensif jusqu'à débloquer son coup spécial. Très mobile et imprévisible, il récompense les joueurs capables de conserver le rythme du combat sans laisser l'adversaire reprendre l'initiative.`
+},
+{
+    name:"ZHAO JIANG HUN",
+    portrait:"images/003perso.png",
+    image:"images/003perso.png",
+	voice:"sounds/voices/zhao_jiang_hun.mp3",
+	
+    bio:`Second fils de Zhao Wei, Zhao Jiang Hun grandit lui aussi au sein du Sanctuaire sous l'enseignement de son père et du Maître Aveugle. Contrairement à son frère Zhao Yun, il ne chercha jamais à créer une nouvelle voie : il perfectionna l'art de tromper son adversaire. Inspiré par la précision du Maître Aveugle, Jiang Hun développa un style basé sur les feintes, les changements de rythme et les déplacements rapides. Là où Zhao Yun cherche à suivre le tempo du combat, Jiang Hun cherche à le briser, obligeant son adversaire à frapper dans le vide. Aujourd'hui, il parcourt le monde comme son frère, non pour dépasser tous les arts martiaux, mais pour prouver qu'un combattant n'a pas besoin de la plus grande force pour vaincre.`,
+
+    special:"Huàn Yǐng Lián",
+
+    specialDesc:`Zhao Jiang Hun crée une succession de feintes et de déplacements si rapides que son adversaire ne parvient plus à distinguer ses véritables mouvements. Après avoir désorienté son ennemi, il termine par une série de coups de jambes rapides et précis.`,
+
+    speed:"★★★★★",
+    damage:"★★☆☆☆",
+    defense:"★★★☆☆",
+    difficulty:"★★★★☆",
+
+    gameplay:`Zhao Jiang Hun est un combattant basé sur la vitesse, la précision et la tromperie. Ses attaques infligent peu de dégâts comparées aux autres membres de la famille Zhao, mais il possède une mobilité exceptionnelle et rate très rarement ses coups. Son gameplay repose sur les enchaînements rapides, les feintes et les attaques avec les jambes pour maintenir constamment la pression. Il est idéal pour les joueurs capables de lire leur adversaire et de contrôler le rythme du combat.`
+},
+{
+    name:"FU WU JIN",
+    portrait:"images/004perso.png",
+    image:"images/004perso.png",
+	voice:"sounds/voices/fu_wu_jin.mp3",
+	
+    bio:`Dernier héritier de la branche Yao du style Yi Yang, le Maître Aveugle fut privé de la vue durant son enfance. Plutôt que de renoncer, il développa un art martial entièrement fondé sur les sens, faisant de sa cécité sa plus grande force. Ami d'enfance de Zhao Wei, il protège aujourd'hui le Sanctuaire et transmet son enseignement à ceux qui souhaitent dépasser les limites du corps et de l'esprit.`,
+
+    special:"Tiān Yǎn",
+
+    specialDesc:`Le Maître Aveugle entre dans un état de concentration absolue. Pendant quelques instants, ses esquives deviennent parfaites et chacune de ses contre-attaques est exécutée avec une précision implacable.`,
+
+    speed:"★★★★☆",
+    damage:"★★★☆☆",
+    defense:"★★★★☆",
+    difficulty:"★★★★★",
+
+    gameplay:`Le Maître Aveugle est un combattant défensif et extrêmement technique. Il excelle dans les esquives, les contres et les déplacements rapides, punissant les adversaires trop agressifs. Sa faible puissance brute est compensée par une grande précision et un excellent contrôle du rythme du combat. Entre de bonnes mains, il devient très difficile à toucher et peut retourner une situation grâce à ses contres.`
+},
+{
+    name:"HAN SHUI",
+    portrait:"images/005perso.png",
+    image:"images/005perso.png",
+	voice:"sounds/voices/han_shui.mp3",
+    bio:`Nouvelle recrue du Sanctuaire Yi Yang, Han Shui est un jeune combattant qui découvre encore les fondements de cet art martial. Contrairement aux maîtres de la branche Zhao, il n'a pas grandi avec des années d'entraînement derrière lui, mais possède une capacité rare : celle de comprendre rapidement les principes du Yin-Yang. Son style repose sur l'absorption des mouvements adverses. Plutôt que de bloquer ou d'éviter les attaques, Han Shui cherche à les accompagner, à détourner leur force et à retourner l'énergie de son ennemi contre lui. Cependant, son manque d'expérience laisse apparaître de nombreuses failles, et il doit encore apprendre à maîtriser pleinement cet équilibre. Malgré ses limites, beaucoup voient en lui un potentiel immense. Il représente la nouvelle génération du Sanctuaire, celle qui doit apprendre, évoluer et dépasser les anciens maîtres.`,
+
+    special:"Yīn Yáng Fǎn",
+
+    specialDesc:`Han Shui absorbe l'attaque de son adversaire et utilise son propre mouvement contre lui. Il saisit son ennemi, détourne son élan et le projette violemment au sol avec une technique de retournement basée sur l'équilibre du Yin et du Yang.`,
+
+    speed:"★★★☆☆",
+    damage:"★★★☆☆",
+    defense:"★★★☆☆",
+    difficulty:"★★☆☆☆",
+
+    gameplay:`Han Shui est un personnage accessible basé sur les prises, les contres et l'adaptation. Il excelle lorsqu'il peut absorber les attaques adverses et punir les erreurs grâce à ses projections. Sa faible expérience le rend moins efficace dans les combats rapides ou très techniques, mais son gameplay simple permet aux nouveaux joueurs de comprendre les bases du style Yi Yang. Avec une bonne maîtrise du timing, il peut devenir un adversaire très difficile à surprendre.`
+},
+{
+    name:"LIU FENG REN",
+    portrait:"images/006perso.png",
+    image:"images/006perso.png",
+	voice:"sounds/voices/liu_feng_ren.mp3",
+	
+    bio:`Personne ne connaît réellement les origines de Liu Feng Ren. Arrivé un jour au Sanctuaire, il fut accepté par Zhao Wei lui-même, qui semble être la seule personne à connaître la véritable raison de sa présence. Étrange et silencieux, Liu Feng Ren combat d'une manière qui dépasse les principes traditionnels du Yi Yang. Toujours les mains dissimulées derrière son dos, il utilise principalement ses jambes et des techniques ressemblant à de la magie. Certains disciples pensent qu'il est un sorcier, d'autres qu'il maîtrise simplement une forme inconnue d'énergie. Lorsqu'il décide enfin de révéler ses mains, son apparence ne change pourtant pas : seuls ses longs ongles semblables à des griffes apparaissent. Mais chaque coup porté avec celles-ci provoque des blessures profondes capables d'affaiblir lentement son adversaire. Même les maîtres du Sanctuaire ignorent ce qu'il cherche réellement. Seul Zhao Wei semble lui accorder une confiance totale.`,
+
+    special:"Xuè Zhǎo",
+
+    specialDesc:`Liu Feng Ren dévoile ses griffes et adopte sa posture véritable. Ses attaques de mains deviennent rapides, infligeant des blessures qui provoquent un effet de saignement continu sur l'adversaire.`,
+
+    speed:"★★★★☆",
+    damage:"★★★★☆",
+    defense:"★★☆☆☆",
+    difficulty:"★★★★☆",
+
+    gameplay:`Liu Feng Ren est un combattant mystérieux basé sur l'usure et le contrôle du combat. Il alterne entre des attaques de jambes rapides, des techniques énigmatiques et des phases où il révèle ses griffes pour infliger des dégâts sur la durée. Son style demande de bien gérer ses deux postures : rester à distance avec ses techniques mystérieuses ou prendre des risques au corps à corps pour appliquer le saignement. Peu résistant, il récompense les joueurs capables de garder l'avantage et de ne jamais laisser l'adversaire reprendre le contrôle.`
+},
+{
+    name:"ZHAO KID PENG",
+    portrait:"images/007perso.png",
+    image:"images/007perso.png",
+	voice:"sounds/voices/zhao_kid_pei.mp3",
+	
+    bio:`Cousin de Zhao Yun et de Zhao Jiang Hun, Zhao Peng grandit dans l'ombre des héritiers de la branche Zhao du style Yi Yang. Surnommé "Kid" du fait de son caractère et de sa taille, il devint rapidement le rival principal de Zhao Jiang Hun, chacun cherchant à prouver la supériorité de sa propre approche du combat. Là où Jiang Hun privilégie les jambes, la vitesse et les feintes, Zhao Peng choisit une voie plus directe : le combat rapproché basé sur les poings, la défense et la maîtrise du corps à corps. Il ne cherche pas à surpasser ses adversaires par la ruse ou la vitesse, mais par une parfaite compréhension des bases.`,
+
+    special:"Zhèng Quán",
+
+    specialDesc:`Zhao Peng adopte une posture parfaite, absorbant l'attaque adverse avant de répondre par une série de coups de poing puissants. Une technique basée sur l'équilibre entre défense et offensive, capable de retourner le combat en un instant.`,
+
+    speed:"★★★☆☆",
+    damage:"★★★★☆",
+    defense:"★★★★☆",
+    difficulty:"★★★☆☆",
+
+    gameplay:`Zhao Peng est un combattant polyvalent, conçu pour s'adapter à toutes les situations. Il ne possède pas la vitesse extrême de Zhao Jiang Hun ni la puissance brute de Zhao Wei, mais il compense par son équilibre parfait entre attaque et défense. Son gameplay repose sur les contres, les coups de poing et la capacité à répondre à chaque type d'adversaire. Un personnage idéal pour les joueurs qui veulent un style complet sans être trop compliqué à prendre en main.`
+},
+{
+    name:"YIN SHUI YANG",
+    portrait:"images/008perso.png",
+    image:"images/008perso.png",
+	voice:"sounds/voices/yin_shui_yang.mp3",
+	
+    bio:`Nul ne connaît le véritable âge de Yin Shui Yang. Les plus anciens manuscrits du Sanctuaire mentionnent déjà son nom, et certains affirment qu'il aurait connu le grand-père de Zhao Yun. Disparu pendant des décennies, il est revenu sans prévenir, déclarant vouloir protéger le Sanctuaire. Pourtant, ses intentions demeurent obscures. Convaincu que les arts martiaux modernes se sont égarés, il souhaite les réformer selon sa propre vision, une philosophie aussi ancienne qu'impitoyable. Zhao Wei lui-même reste méfiant à son égard, conscient que derrière son calme se cache une ambition capable de bouleverser l'équilibre du Yi Yang. Yin Shui Yang n'est ni un héros, ni un véritable ennemi. Il est un homme persuadé que seule sa vérité peut préserver l'avenir.`,
+
+    special:"Duàn Mài",
+
+    specialDesc:`Yin Shui Yang adopte une posture de contre absolue. Si son adversaire attaque, il frappe instantanément plusieurs points vitaux, infligeant de lourds dégâts et affaiblissant temporairement sa vitesse ainsi que sa puissance offensive.`,
+
+    speed:"★★★☆☆",
+    damage:"★★★★★",
+    defense:"★★★★★",
+    difficulty:"★★★★★",
+
+    gameplay:`Yin Shui Yang est un personnage extrêmement exigeant, pensé pour les joueurs les plus expérimentés. Son gameplay repose presque entièrement sur les contres et la punition des erreurs adverses. Plutôt que de prendre l'initiative, il attend le moment parfait pour frapper les points vitaux et retourner un combat en quelques échanges. Très peu permissif, il demande une excellente lecture du jeu, mais entre de bonnes mains, il devient l'un des combattants les plus redoutables du Sanctuaire.`
+},
+{
+    name:"SHAO KAHN",
+    portrait:"images/009perso.png",
+    image:"images/009perso.png"
+}
+];
+
+const grid = document.getElementById("grid");
+const bigCharacter = document.getElementById("bigCharacter");
+const characterName = document.getElementById("characterName");
+const moveSound = document.getElementById("moveSound");
+const infoScreen = document.getElementById("infoScreen");
+
+const infoImage = document.getElementById("infoImage");
+const infoName = document.getElementById("infoName");
+const infoBio = document.getElementById("infoBio");
+const infoSpecial = document.getElementById("infoSpecial");
+const infoSpecialDesc = document.getElementById("infoSpecialDesc");
+const infoStats = document.getElementById("infoStats");
+const infoGameplay = document.getElementById("infoGameplay");
+
+const voiceSound = document.getElementById("voiceSound");
+
+let currentIndex = 0;
+for(let i=0;i<240;i++){
+
+    const pixel=document.createElement("div");
+
+    pixel.className="pixel";
+
+    transition.appendChild(pixel);
+
+}
+/* =========================
+   SELECT CHARACTER
+========================= */
+
+function selectCharacter(index){
+
+    currentIndex = index;
+
+    // reset sélection UI
+    document.querySelectorAll(".portrait")
+        .forEach(p => p.classList.remove("selected"));
+
+    const portraits = document.querySelectorAll(".portrait");
+    if (portraits[index]) {
+        portraits[index].classList.add("selected");
+    }
+
+    // animation perso principal
+    bigCharacter.classList.remove("active");
+
+    setTimeout(() => {
+        bigCharacter.src = characters[index].image;
+        characterName.textContent = characters[index].name;
+
+        void bigCharacter.offsetWidth;
+        bigCharacter.classList.add("active");
+    }, 50);
+}
+
+/* =========================
+   SOUND SAFE PLAY
+========================= */
+
+function playMoveSound(){
+    if (!moveSound) return;
+
+    moveSound.currentTime = 0;
+
+    const playPromise = moveSound.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {
+            // bloque silencieusement (normal sur certains navigateurs)
+        });
+    }
+}
+
+/* =========================
+   CREATE PORTRAITS
+========================= */
+
+characters.forEach((char, index) => {
+
+    const portrait = document.createElement("div");
+    portrait.className = "portrait";
+
+    portrait.innerHTML = `<img src="${char.portrait}" alt="">`;
+
+portrait.addEventListener("mouseenter", () => {
+
+    if (bgMusic && bgMusic.paused) {
+        startMusic();
+    }
+
+    playMoveSound();
+    selectCharacter(index);
+});
+
+portrait.addEventListener("click", () => {
+
+    selectCharacter(index);
+
+    playTransition(index);
+
+});
+
+    grid.appendChild(portrait);
+});
+
+/* =========================
+   INIT
+========================= */
+
+selectCharacter(0);
+
+/* =========================
+   TIMER
+========================= */
+
+let time = 29;
+const timer = document.getElementById("timer");
+
+setInterval(() => {
+    if (time > 0) {
+        time--;
+        timer.textContent = time;
+    }
+}, 1000);
+const bgMusic = document.getElementById("bgMusic");
+
+function startMusic(){
+    if (!bgMusic) return;
+
+    bgMusic.volume = 0.2; // volume plus bas que les SFX
+
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {
+            // bloqué jusqu’à interaction utilisateur (normal)
+        });
+    }
+}
+function openInfo(index){
+
+    const c = characters[index];
+
+    infoImage.src = c.image;
+
+    infoName.textContent = c.name;
+
+    infoBio.textContent = c.bio;
+
+    infoSpecial.textContent = c.special;
+
+    infoSpecialDesc.textContent = c.specialDesc;
+
+    infoStats.innerHTML =
+    `
+    Vitesse : ${c.speed}<br>
+    Dégâts : ${c.damage}<br>
+    Défense : ${c.defense}<br>
+    Difficulté : ${c.difficulty}
+    `;
+
+    infoGameplay.textContent = c.gameplay;
+
+    infoScreen.classList.add("active");
+
+}
+async function playTransition(index){
+
+    const pixels=[...document.querySelectorAll(".pixel")];
+
+    pixels.sort(()=>Math.random()-0.5);
+
+    // Apparition
+    for(const p of pixels){
+
+        p.style.transition="all .12s";
+
+        p.style.opacity=1;
+        p.style.transform="scale(1)";
+
+        await new Promise(r=>setTimeout(r,4));
+
+    }
+
+// On ouvre la fiche
+openInfo(index);
+
+// On joue la voix du personnage
+playVoice(index);
+
+    // Disparition
+    pixels.reverse();
+
+    for(const p of pixels){
+
+        p.style.opacity=0;
+        p.style.transform="scale(0)";
+
+        await new Promise(r=>setTimeout(r,4));
+
+    }
+
+}
+function playVoice(index){
+
+    const c = characters[index];
+
+    if(!c.voice) return;
+
+    voiceSound.pause();
+    voiceSound.src = c.voice;
+    voiceSound.currentTime = 0;
+
+    const playPromise = voiceSound.play();
+
+    if(playPromise !== undefined){
+        playPromise.catch(()=>{});
+    }
+}
+document.getElementById("backButton").onclick = () => {
+
+    infoScreen.classList.remove("active");
+
+};
+</script>
+</body>
+</html>

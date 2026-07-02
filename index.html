@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZHAO-YUN</title>
+
+<style>
+
+
+body{
+    height:100vh;
+    overflow:hidden;
+
+    background:url("images/fond.jpg") center center/cover no-repeat;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+}
+
+/* Overlay sombre */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.55);
+}
+
+.screen{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    text-align:center;
+}
+
+/* Titre principal */
+.title-image{
+    width:min(900px, 80vw);
+    height:auto;
+
+    filter:
+        drop-shadow(0 0 10px rgba(255,255,255,.8))
+        drop-shadow(0 0 30px rgba(255,200,0,.8))
+        drop-shadow(0 0 60px rgba(255,100,0,.7));
+
+    margin-bottom:80px;
+
+    animation:logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+/* PRESS START */
+.press-start{
+    font-family:monospace;
+
+    font-size:clamp(1.2rem,3vw,2.5rem);
+
+    color:white;
+
+    letter-spacing:6px;
+
+    text-shadow:
+        0 0 10px white,
+        0 0 20px white;
+
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    0%,50%{
+        opacity:1;
+    }
+
+    51%,100%{
+        opacity:0;
+    }
+}
+
+/* Petit texte */
+.hint{
+    margin-top:30px;
+
+    color:rgba(255,255,255,.6);
+
+    font-size:0.8rem;
+
+    letter-spacing:2px;
+}
+
+</style>
+</head>
+
+<body onclick="startSite()">
+
+<div class="screen">
+
+    <img src="images/name.png" alt="ZHAO-YUN" class="title-image">
+    <div class="press-start">
+        PRESS START
+    </div>
+
+    <div class="hint">
+        CLICK ANYWHERE
+    </div>
+
+</div>
+
+<script>
+
+function startSite(){
+    window.location.href = "accueil.html";
+}
+
+document.addEventListener("keydown",(e)=>{
+    if(e.key==="Enter"){
+        startSite();
+    }
+});
+
+</script>
+
+</body>
+</html>
