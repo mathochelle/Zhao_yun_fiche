@@ -379,6 +379,22 @@ TRANSITION MOSAÏQUE
     transform:scale(0);
 
 }
+#characterButton{
+    margin-top:30px;
+    padding:14px 28px;
+    background:#d40000;
+    color:white;
+    border:none;
+    font-size:20px;
+    font-family:Impact,sans-serif;
+    cursor:pointer;
+    transition:.25s;
+}
+
+#characterButton:hover{
+    background:#ff2b2b;
+    transform:scale(1.05);
+}
 </style>
 </head>
 
@@ -427,7 +443,9 @@ TIME
 
         <h2>STYLE DE JEU</h2>
         <p id="infoGameplay"></p>
-
+<button id="characterButton" style="display:none;">
+    Découvrir ce personnage →
+</button>
     </div>
 
     <div class="info-right">
@@ -607,6 +625,8 @@ const infoSpecialDesc = document.getElementById("infoSpecialDesc");
 const infoStats = document.getElementById("infoStats");
 const infoGameplay = document.getElementById("infoGameplay");
 
+const characterButton = document.getElementById("characterButton");
+
 const voiceSound = document.getElementById("voiceSound");
 
 let currentIndex = 0;
@@ -735,28 +755,33 @@ function openInfo(index){
     const c = characters[index];
 
     infoImage.src = c.image;
-
     infoName.textContent = c.name;
-
     infoBio.textContent = c.bio;
-
     infoSpecial.textContent = c.special;
-
     infoSpecialDesc.textContent = c.specialDesc;
 
-    infoStats.innerHTML =
-    `
-    Vitesse : ${c.speed}<br>
-    Dégâts : ${c.damage}<br>
-    Défense : ${c.defense}<br>
-    Difficulté : ${c.difficulty}
+    infoStats.innerHTML = `
+        Vitesse : ${c.speed}<br>
+        Dégâts : ${c.damage}<br>
+        Défense : ${c.defense}<br>
+        Difficulté : ${c.difficulty}
     `;
 
     infoGameplay.textContent = c.gameplay;
 
     infoScreen.classList.add("active");
 
-}
+    if (c.name === "ZHAO-YUN") {
+        characterButton.style.display = "inline-block";
+
+        characterButton.onclick = () => {
+            window.location.href = "lore.html";
+        };
+    } else {
+        characterButton.style.display = "none";
+    }
+} // <-- CETTE ACCOLADE MANQUAIT
+
 async function playTransition(index){
 
     const pixels=[...document.querySelectorAll(".pixel")];

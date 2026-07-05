@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZHAO-YUN</title>
+
+<style>
+	*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:Impact,sans-serif;
+    color:white;
+
+    background:
+    linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.85)),
+    url("images/fond5.jpg") center center/cover fixed;
+
+    overflow-x:hidden;
+}
+
+/*==========================
+BANNIÈRE
+==========================*/
+
+header{
+
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    position:relative;
+
+}
+
+header::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:200px;
+
+    background:linear-gradient(transparent,#0d0d0d);
+
+}
+
+header h1{
+
+    font-size:90px;
+
+    letter-spacing:8px;
+
+    color:#ffe100;
+
+    text-shadow:
+    0 0 25px orange,
+    5px 5px black;
+
+}
+
+header h2{
+
+    margin-top:20px;
+
+    font-size:34px;
+
+    color:#d8d8d8;
+
+    letter-spacing:4px;
+
+}
+
+header p{
+
+    margin-top:35px;
+
+    width:700px;
+    max-width:90%;
+
+    font-family:Arial;
+
+    font-size:19px;
+
+    line-height:1.7;
+
+    color:#ddd;
+
+}
+
+/*==========================
+BOUTON RETOUR
+==========================*/
+
+#back{
+
+    position:fixed;
+
+    top:25px;
+    left:25px;
+
+    padding:14px 30px;
+
+    background:#d40000;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:22px;
+
+    z-index:999;
+
+    transition:.25s;
+
+}
+
+#back:hover{
+
+    background:red;
+
+    transform:scale(1.05);
+
+}
+
+/*==========================
+SECTIONS
+==========================*/
+
+section{
+
+    width:1200px;
+    max-width:90%;
+
+    margin:auto;
+
+    padding:120px 0;
+
+}
+
+.section-title{
+
+    text-align:center;
+
+    font-size:55px;
+
+    color:#ffe100;
+
+    margin-bottom:60px;
+
+    text-shadow:
+    0 0 20px orange;
+
+}
+
+/*==========================
+BIO
+==========================*/
+
+.bio-grid{
+
+    display:grid;
+
+    grid-template-columns:320px 1fr;
+
+    gap:70px;
+
+    align-items:center;
+
+}
+
+.bio-grid img{
+
+    width:100%;
+
+    border:4px solid white;
+
+    box-shadow:
+    0 0 35px rgba(255,180,0,.35);
+
+}
+
+.bio-table{
+
+    display:grid;
+
+    grid-template-columns:180px 1fr;
+
+    gap:18px;
+
+    font-family:Arial;
+
+    font-size:19px;
+
+}
+
+.bio-table div{
+
+    padding:10px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.15);
+
+}
+
+/*==========================
+CHAPITRES
+==========================*/
+
+.chapter{
+
+    display:grid;
+
+    grid-template-columns:420px 1fr;
+
+    gap:60px;
+
+    margin:120px 0;
+
+    align-items:center;
+
+    opacity:1;
+
+    transform:none;
+
+}
+
+.chapter.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+.chapter:nth-child(even){
+
+    grid-template-columns:1fr 420px;
+
+}
+
+.chapter:nth-child(even) img{
+
+    order:2;
+
+}
+
+.chapter img{
+
+    width:100%;
+    height:auto;
+
+    border:4px solid white;
+
+    box-shadow:0 0 30px rgba(255,80,80,.35);
+
+    border-radius:8px;
+
+}
+
+.chapter h3{
+
+    font-size:42px;
+
+    color:#ff4040;
+
+    margin-bottom:25px;
+
+    letter-spacing:3px;
+
+}
+
+.chapter p{
+
+    font-family:Arial;
+
+    font-size:18px;
+
+    line-height:1.9;
+
+    color:#ddd;
+
+}
+
+/*==========================
+PERSONNALITÉ
+==========================*/
+
+.personality{
+
+    display:grid;
+
+    grid-template-columns:1fr 350px;
+
+    gap:60px;
+
+    align-items:center;
+
+}
+
+.personality img{
+
+    width:100%;
+
+    border:4px solid white;
+
+}
+
+.personality p{
+
+    font-family:Arial;
+
+    font-size:19px;
+
+    line-height:1.9;
+
+    color:#ddd;
+
+}
+
+/*==========================
+FOOTER
+==========================*/
+
+footer{
+
+    padding:100px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-family:Arial;
+
+    font-size:16px;
+
+}
+
+/*==========================
+SCROLLBAR
+==========================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#c40000;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111;
+
+}
+
+/*==========================
+RESPONSIVE
+==========================*/
+
+@media(max-width:900px){
+
+header h1{
+
+font-size:60px;
+
+}
+
+.bio-grid,
+.chapter,
+.personality{
+
+grid-template-columns:1fr;
+
+}
+
+.chapter:nth-child(even){
+
+grid-template-columns:1fr;
+
+}
+
+.chapter:nth-child(even) img{
+
+order:0;
+
+}
+
+}
+.chapter img{
+    width:100%;
+    border:4px solid #fff;
+    box-shadow:0 0 30px rgba(255,80,80,.35);
+}
+</style>
+</head>
+<body>
+		<audio id="bg-music" loop>
+    <source src="sounds/fond.mp3" type="audio/mpeg">
+</audio>
+<a id="back" href="accueil.html">← Retour</a>
+<header>
+
+    <h1>ZHAO YUN</h1>
+
+    <h2>LA ROSE ÉCARLATE</h2>
+
+    <p>
+        Codex du personnage
+    </p>
+
+</header>
+<section>
+
+<h2 class="section-title">BIOGRAPHIE</h2>
+
+<div class="bio-grid">
+
+<img src="images/zhaoyun_portrait.jpg" alt="Zhao Yun">
+
+<div class="bio-table">
+
+<div><strong>Nom</strong></div>
+<div>Zhao Yun</div>
+
+<div><strong>Surnom</strong></div>
+<div>La Rose Écarlate</div>
+
+<div><strong>Âge</strong></div>
+<div>25 ans</div>
+
+<div><strong>Origine</strong></div>
+<div>Sanctuaire Yi Yang</div>
+
+<div><strong>Affiliation</strong></div>
+<div>Clan Zhao (branche secondaire)</div>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">PERSONNALITÉ</h2>
+
+<div class="chapter">
+
+<img src="images/personnalite.jpg">
+
+<div>
+
+<p>
+
+Zhao Yun est un combattant au tempérament arrogant, lucide et opportuniste. Il n’a pas la rigidité des anciens maîtres ni l’obsession idéologique de ses rivaux. Il vit dans l’instant, analyse chaque situation rapidement et choisit toujours la solution la plus efficace pour atteindre son objectif. Il peut paraître calme, presque détaché, mais derrière cette façade se cache un esprit calculateur. Il n’agit jamais sans intérêt. Ce n’est ni un idéaliste, ni un disciple aveugle : il avance uniquement si cela le fait progresser.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">ARME ARTÉFACT</h2>
+
+<div class="chapter">
+
+<img src="images/gants.jpg">
+
+<div>
+
+<h3>Gants du Forgeron du Sanctuaire</h3>
+
+<p>
+
+Des gants lourds forgés dans un métal inconnu, spécialement conçus pour Zhao Peng.
+
+</p>
+
+<p>
+
+Ces gants sont à la fois une arme et un bouclier :
+
+</p>
+
+<p>
+
+Capables de bloquer les armes blanches Capables de dissiper l’impact des projectiles métalliques comme des balles et suffisamment lourds pour transformer chaque coup en frappe écrasante,mais exigeant une maîtrise parfaite du timing et du placement
+
+</p>
+
+<p>
+
+Mal utilisés, ils ralentissent le combattant. Parfaitement maîtrisés, ils deviennent une défense quasi impénétrable.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE I
+
+<br><br>
+
+LA ROSE ÉCARLATE
+
+</h2>
+
+<div class="chapter show">
+
+<img src="images/lore1.jpg">
+
+<div>
+
+<p>
+
+Il existe, au cœur des montagnes orientales, des terres où les hommes ne naissent pas seulement avec un nom, mais avec un héritage. Là-bas, l'art martial n'était ni un divertissement, ni une arme destinée à la guerre. Il était une religion, une langue silencieuse par laquelle les générations se transmettaient leur savoir. Les anciens disaient que chaque mouvement possédait une âme et que celui qui parvenait à les réunir toutes approchait l'équilibre parfait : le Yi Yang. C'est dans cette contrée que naquit Zhao Yun, fils de Zhao Wei, héritier de la branche Zhao, et de Lin Xiu, l'une des plus brillantes maîtresses de sa génération. Les premières années de sa vie furent paisibles.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE II
+
+<br><br>
+
+LA FAMILLE ZHAO
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore2.jpg">
+
+<div>
+
+<p>
+
+La demeure familiale dominait une vallée de bambous où l'on entendait, du matin jusqu'au crépuscule, le chant du vent se mêler aux coups d'entraînement. Zhao Yun grandit dans cette harmonie, entouré d'une famille que beaucoup enviaient. Son père incarnait la force, et sa mère incarnait la tradition.
+
+</p>
+
+<p>
+
+Tous deux étaient des maîtres dont les disciples parcouraient parfois plusieurs semaines pour recevoir un simple conseil. Quelques années plus tard naquirent son troisième frère:Zhao Ming, un enfant d'une douceur étonnante, mais dont le talent semblait déjà dépasser celui de nombreux adultes. Les trois garçons grandirent ensemble, partageant les mêmes repas, les mêmes entraînements et les mêmes rêves.
+
+</p>
+
+<p>
+
+Leur mère leur enseignait les fondements du Yi Yang, comme l'exigeait la coutume. Chaque posture était répétée jusqu'à devenir naturelle, chaque respiration comptait autant qu'un coup porté. Zhao Yun se montrait studieux. Jiang Hun préférait improviser. Quant au jeune Ming, il apprenait avec une facilité presque inquiétante. Mais derrière cette apparente sérénité, grandissait une fracture que personne ne voyait encore. Au fil des années, Zhao Wei découvrit d'anciens manuscrits oubliés, rédigés bien avant les traditions modernes. Ils décrivaient des techniques perdues, des formes de combat que plus personne n'osait pratiquer. Il les étudia dans le plus grand secret car à ses yeux, ces écrits n'étaient pas une hérésie ; ils représentaient une évolution.
+
+</p>
+
+<p>
+
+Pourquoi des techniques capables de sauver des vies devraient-elles disparaître simplement parce qu'elles ne respectaient plus les coutumes ?
+
+</p>
+
+<p>
+
+Lin Xiu s'opposa immédiatement à cette idée. Pour elle, les traditions existaient pour préserver l'équilibre du Yi Yang. Si les femmes étaient seules autorisées à transmettre les arts martiaux, ce n'était pas par orgueil, mais parce que tel était l'ordre établi depuis des lustres. Leur désaccord, d'abord discret, devint une querelle, et la querelle devint un conflit, et le conflit finit par dépasser les murs de leur demeure.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE III
+
+<br><br>
+
+LE DUEL RITUEL
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore3.jpg">
+
+<div>
+
+<p>
+
+Les anciens furent appelés. Après de longues délibérations, ils rendirent leur jugement, selon les lois du clan, un Duel Rituel aurait lieu. Le vainqueur déciderait de l'avenir de la branche Zhao.
+
+</p>
+
+<p>
+
+Mais le rituel imposait une seconde règle, plus terrible encore. Les héritiers devaient choisir le parent dont ils soutenaient la vision. Et si leur camp venait à être vaincu… Ils partageraient son destin. Le jour du duel arriva lorsque Zhao Yun atteignit sa dix-huitième année, la vallée entière s'était tue.
+
+</p>
+
+<p>
+
+Les disciples, les anciens et les maîtres entouraient l'arène de pierre où deux époux, qui s'étaient autrefois juré fidélité, allaient désormais s'affronter jusqu'à la mort. Zhao Yun prit place derrière son père. Quant au jeune Zhao Ming, les larmes aux yeux, rejoignit sa mère. Le vent lui-même semblait retenir son souffle. Et lorsque les deux maîtres adoptèrent leur garde… Le destin de toute une famille bascula.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE IV
+
+<br><br>
+
+LE SACRIFICE
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore4.jpg">
+
+<div>
+
+<p>
+
+Le duel dura jusqu'au coucher du soleil. Nul ne sut dire lequel des deux époux avait dominé l'autre, tant leurs techniques semblaient se répondre comme deux moitiés d'un même souffle. Mais lorsqu'enfin le silence retomba sur l'arène, Lin Xiu gisait sur la pierre, le regard déjà vide, tandis que Zhao Wei demeurait debout, immobile, le poing encore tremblant d'avoir accompli l'irréparable. Il n'y eut ni cri de victoire, ni acclamation. Seulement le poids d'une tradition plus ancienne que tous ceux qui l'avaient contemplée.
+
+</p>
+
+<p>
+
+Selon les lois du rituel, les héritiers ayant choisi le camp du vaincu devaient partager son destin.
+Le plus jeune des frères, Zhao Ming, s'avança de lui-même. Malgré les supplications de quelques anciens, il demeura droit, le visage serein. Zhao Wei, lui, resta figé. Il avait pu lever la main sur son épouse au nom de l'honneur, mais aucun père ne pouvait lever son arme sur son propre enfant.
+
+</p>
+
+<p>
+
+Le temps semblait suspendu.
+
+</p>
+
+<p>
+
+Alors Zhao Yun rompit le silence.
+
+</p>
+
+<p>
+
+« Père... si les lois cessent d'être respectées aujourd'hui, alors tout ce pour quoi elle est morte n'aura servi à rien. »
+
+</p>
+
+<p>
+
+Ces paroles transpercèrent Zhao Wei plus sûrement qu'une lame.
+
+Les témoins racontèrent qu'il pleura pour la première et unique fois de son existence. Puis il accomplit ce que le rituel exigeait. Lorsque le soleil disparut derrière les montagnes, la branche Zhao avait perdu une mère... et un fils.
+
+</p>
+
+<p>
+
+Les années qui suivirent furent celles de l'exil.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE V
+
+<br><br>
+
+L'EXIL
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore5.jpg">
+
+<div>
+
+<p>
+
+Dégoûté par ceux qui avaient préféré les traditions à leur propre sang, Zhao Wei quitta les siens et rejoignit un ancien refuge oublié : le Sanctuaire. Là vivaient des hommes rejetés par les clans, des érudits, des combattants et des maîtres ayant consacré leur existence à préserver des techniques que le monde refusait désormais d'enseigner.
+
+</p>
+
+<p>
+
+C'est en ces lieux que Zhao Yun retrouva Fu Wu Jin, le Maître Aveugle, vieil ami de son père.
+
+</p>
+
+<p>
+
+Sous son regard invisible, les jours devinrent des mois, puis des années. Zhao Yun apprit à écouter le vent avant de frapper, à sentir la moindre vibration du sol, tandis que Zhao Jiang Hun perfectionnait sa vitesse jusqu'à rendre ses mouvements presque insaisissables.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE VI
+
+<br><br>
+
+MEI LIAN
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore6.jpg">
+
+<div>
+
+<p>
+
+Pour la première fois depuis longtemps, la paix semblait leur être rendue. Désireux d'apaiser les tensions entre les clans, Zhao Wei accepta une ancienne coutume. Zhao Yun fut promis à Mei Lian, héritière d'une grande famille martiale. Cette union devait rapprocher deux visions du Yi Yang et offrir un avenir plus stable aux générations futures. Avec le temps, ce mariage arrangé se transforma en un attachement sincère.
+
+</p>
+
+<p>
+
+Mei Lian possédait un tempérament affirmé. Intelligente, vive et dotée d'un caractère bien plus fort qu'il n'y paraissait, elle menait naturellement leur quotidien. Zhao Yun ne se laissait jamais dominer ; il défendait ses convictions avec fermeté. Pourtant, il acceptait volontiers de lui céder les petites batailles de la vie, amusé par son assurance et conscient qu'elle savait souvent où elle voulait aller. Cette différence de caractère faisait naître une complicité que beaucoup leur enviaient.
+
+</p>
+
+<p>
+
+Pendant quatre années, ils vécurent heureux. Mais peu à peu, Mei Lian comprit qu'elle ne pourrait jamais détourner Zhao Yun de sa véritable vocation. Son cœur appartenait avant tout à sa quête martiale. Elle ne parviendrait ni à le changer, ni à faire de lui l'homme qu'elle imaginait pour construire l'avenir auquel elle aspirait.
+
+</p>
+
+<p>
+
+Un matin, elle s'en alla. Elle ne laissa qu'une courte lettre dans laquelle elle écrivait qu'elle refusait de consacrer sa vie à un homme dont le premier amour serait toujours les arts martiaux. Elle choisit une existence plus paisible, plus sûre, auprès d'un homme capable de lui offrir la vie qu'elle désirait. Zhao Yun ne lui en voulut jamais d'être partie.
+
+</p>
+
+<p>
+
+En revanche, il ne pardonna jamais qu'elle ait décidé seule de mettre un terme à leur histoire.
+
+</p>
+
+<p>
+
+À partir de ce jour, il cessa de croire que les liens du cœur pouvaient durer plus longtemps que la volonté d'un combattant. Son unique promesse serait désormais faite à sa propre voie, enfin, jusqu'au jour peut-être quelqu'un pourrait lui faire changer d'avis qui sait?
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE VII
+
+<br><br>
+
+LE DÉPART
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore7.jpg">
+
+<div>
+
+<p>
+
+Peu après, les deux frères prirent une décision. Le monde était vaste, et pour devenir meilleurs, il fallait voyager pour devenir meilleurs ou se perfectionner, alors les deux frères prendraient des chemins différents. Zhao Jiang Hun, parti vers le sud, alors que Zhao Yun, lui, tournerait son regard vers le Nord.
+
+</p>
+
+<p>
+
+Au-delà des montagnes s'étendait Arcadia, une terre réputée pour abriter de grands guerriers, les plus féroces combattants et des disciplines inconnues du Yi Yang.
+
+</p>
+
+<p>
+
+Avant de quitter le Sanctuaire, Zhao Wei posa une main sur l'épaule de son fils.
+
+</p>
+
+<p>
+
+« Ne cherche pas seulement à vaincre les autres, Zhao Yun. Trouve une voie qu'aucun homme n'a encore empruntée. »
+
+</p>
+
+<p>
+
+Et sans se retourner, Zhao Yun prit la route du Nord.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<section>
+
+<h2 class="section-title">
+
+CHAPITRE VIII
+
+<br><br>
+
+LA ROSE ÉCARLATE D'ARCADIA
+
+</h2>
+
+<div class="chapter">
+
+<img src="images/lore8.jpg">
+
+<div>
+
+<p>
+
+C'est ainsi que commença le voyage.
+
+À son arrivée en Arcadia, Zhao Yun comprit rapidement qu'il ne serait jamais considéré comme l'un des leurs. Le royaume se méfiait profondément des étrangers, et plus encore de ceux qui pénétraient sur son territoire sans autorisation. Entré clandestinement par les cols montagneux du sud, il effaça jusqu'à son nom, ne révélant que le strict nécessaire et évitant d'attirer l'attention des autorités. Il était connu, de fait de ses tatouages et de ses quelques assassinat sous le nom de la Rose Écarlate.
+
+</p>
+
+<p>
+
+Pour survivre, il vendit ce qu'il maîtrisait le mieux : son art du combat.
+
+</p>
+
+<p>
+
+Dans les tavernes, les marchés et les quartiers les plus mal famés, il se fit connaître comme un mercenaire solitaire, acceptant les contrats que d'autres refusaient. Escorte, chasse aux criminels, éliminations ciblées, protection de convois ou règlements de comptes... Zhao Yun ne prêtait allégeance à aucune bannière. Seule la valeur du défi, ou parfois la nécessité de gagner sa vie, guidait ses choix.
+
+</p>
+
+<p>
+
+Lorsque les contrats se faisaient rares, il gagnait quelques pièces d'une manière plus inattendue. Les habitants d'Arcadia, fascinés par les mouvements fluides de son art martial, le prenaient souvent pour un danseur venu de contrée lointaine. Il acceptait alors de se produire lors de fêtes ou de réceptions, où ses enchaînements, semblables à une danse, suscitait autant d'admiration que d'étrangeté. Peu savaient que chacun de ces pas avait été conçu pour tuer.
+
+</p>
+
+<p>
+
+Cette double existence lui permit de rester dans l'ombre. Tantôt mercenaire, tantôt assassin, tantôt simple artiste de passage, Zhao Yun traversait Arcadia comme un fantôme. Il pouvait accepter un contrat de l'Échiquier de Sang un jour, puis travailler pour les rebelles dès le lendemain, sans jamais partager leurs idéaux. Pour lui, ces missions n'étaient qu'un moyen de poursuivre son véritable objectif : affronter des combattants toujours plus puissants et perfectionner le style qu'il avait juré de rendre supérieur à tous les autres.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<footer>
+
+<hr style="margin-bottom:40px; border-color:#444;">
+
+<p style="font-size:22px; color:#ffe100; letter-spacing:2px;">
+
+"Wow c'était une belle danse !- Attend mais t'es mort?!"
+
+</p>
+
+<br>
+
+<p>
+
+— Zhao Yun
+
+</p>
+
+</footer>
+
+<script>
+const chapters = document.querySelectorAll(".chapter");
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+        }
+    });
+}, {
+    threshold: 0.15
+});
+
+chapters.forEach(chapter => {
+    observer.observe(chapter);
+});
+
+// musique auto au premier mouvement de la page
+document.addEventListener("click", () => {
+    const music = document.getElementById("bg-music");
+    if (music) {
+        music.volume = 0.5; // optionnel
+        music.play();
+    }
+}, { once: true });
+</script>
+</body>
+</html>
